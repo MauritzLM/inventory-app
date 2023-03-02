@@ -1,8 +1,18 @@
 const SpeciesInstance = require("../models/speciesinstance");
 
+const async = require("async");
+
 // Display list of all SpeciesInstances.
-exports.speciesinstance_list = (req, res) => {
-    res.send("NOT IMPLEMENTED: SpeciesInstance list");
+exports.speciesinstance_list = (req, res, next) => {
+    SpeciesInstance.find()
+        .populate("species")
+        .exec(function (err, results) {
+            if (err) {
+                return next(err);
+            }
+            //Successful, so render
+            res.render("speciesinstance_list", { title: "Species Instance List", speciesinstance_list: results });
+        });
 };
 
 // Display detail page for a specific SpeciesInstance.
