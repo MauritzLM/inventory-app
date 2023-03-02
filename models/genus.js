@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const GenusSchema = new Schema({
     name: { type: String, required: true },
-    family: { type: Schema.Types.ObjectId, required: true }
+    family: { type: Schema.Types.ObjectId, ref: "Family", required: true }
 });
 
 GenusSchema.virtual("url").get(function () {
