@@ -24,18 +24,19 @@ exports.index = (req, res) => {
 // Display list of all species.
 exports.species_list = (req, res, next) => {
     Species.find({}, "common_name")
-        .exec(function (err, list_species) {
+        .exec(function (err, results) {
             if (err) {
                 return next(err);
             }
             //Successful, so render
-            res.render("species_list", { title: "Species List", species_list: list_species });
+            res.render("species_list", { title: "Species List", species_list: results });
         });
 };
 
 
 // Display detail page for a specific species.
 exports.species_detail = (req, res) => {
+    Species.findById(req.params.id)
     res.send(`NOT IMPLEMENTED: Species detail: ${req.params.id}`);
 };
 
