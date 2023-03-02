@@ -1,8 +1,13 @@
 const Family = require("../models/family");
 
 // Display list of all Families.
-exports.families_list = (req, res) => {
-    res.send("NOT IMPLEMENTED: Families list");
+exports.families_list = (req, res, next) => {
+    Family.find().exec(function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        res.render("family_list", { title: "Family list", family_list: results });
+    });
 };
 
 // Display detail page for a specific Family.
