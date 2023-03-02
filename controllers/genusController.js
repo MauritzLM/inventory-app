@@ -1,8 +1,15 @@
 const Genus = require("../models/genus");
 
 // Display list of all Genus.
-exports.genus_list = (req, res) => {
-    res.send("NOT IMPLEMENTED: Genus list");
+exports.genus_list = (req, res, next) => {
+    Genus.find()
+        .populate("family")
+        .exec(function (err, results) {
+            if (err) {
+                return next(err);
+            }
+            res.render("genus_list", { title: "List of Genesus", genesus_list: results })
+        })
 };
 
 // Display detail page for a specific Genus.
