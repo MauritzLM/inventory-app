@@ -1,13 +1,38 @@
 const Species = require("../models/species");
+const Families = require("../models/family");
+
+const async = require("async");
 
 exports.index = (req, res) => {
-    res.send("NOT IMPLEMENTED: Site Home Page");
+    async.parallel({
+        families_count: function (callback) {
+            Families.countDocuments({}, callback);
+        },
+        species_count: function (callback) {
+            Species.countDocuments({}, callback);
+        }
+    },
+        function (err, results) {
+            res.render("index", {
+                title: 'Homepage',
+                error: err,
+                data: results
+            });
+        });
 };
 
-// Display list of all bspecies.
-exports.species_list = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species list");
+// Display list of all species.
+exports.species_list = (req, res, next) => {
+    Species.find({}, "common_name")
+        .exec(function (err, list_species) {
+            if (err) {
+                return next(err);
+            }
+            //Successful, so render
+            res.render("species_list", { title: "Species List", species_list: list_species });
+        });
 };
+
 
 // Display detail page for a specific species.
 exports.species_detail = (req, res) => {
