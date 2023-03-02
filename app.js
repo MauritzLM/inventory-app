@@ -12,8 +12,11 @@ var app = express();
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
+require('dotenv').config();
 mongoose.set('strictQuery', false);
-const mongoDB = "insert_your_database_url_here";
+
+const dev_db_url = process.env.MONGODB_LOGIN;
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch(err => console.log(err));
 async function main() {
