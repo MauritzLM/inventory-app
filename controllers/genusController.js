@@ -1,4 +1,7 @@
 const Genus = require("../models/genus");
+const Species = require("../models/species");
+
+const async = require("async");
 
 // Display list of all Genus.
 exports.genus_list = (req, res, next) => {
@@ -8,13 +11,39 @@ exports.genus_list = (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            res.render("genus_list", { title: "List of Genesus", genesus_list: results })
-        })
+            res.render("genus_list", { title: "Genus list", genus_list: results })
+        });
 };
 
 // Display detail page for a specific Genus.
-exports.genus_detail = (req, res) => {
-    res.send(`NOT IMPLEMENTED: Genus detail: ${req.params.id}`);
+exports.genus_detail = (req, res, next) => {
+    async.parallel({
+        genus: function (callback) {
+            Genus.findById(req.params.id)
+                .populate("family")
+                .exec(callback)
+        },
+        species_list: function (callback) {
+            Species.find({ genus: req.params.id }).exec(callback)
+        },
+    }, (err, results) => {
+        if (err) {
+            return next(err);
+        }
+        if (results.genus == null) {
+            // No results.
+            const err = new Error("Genus not found");
+            err.status = 404;
+            return next(err);
+        }
+        // genus found
+        res.render("genus_detail", {
+            title: `${results.genus.name}`,
+            genus: results.genus,
+            species_list: results.species_list
+        });
+    }
+    )
 };
 
 // Display Genus create form on GET.
