@@ -18,7 +18,9 @@
         <% for (let i=0; i < family_list.length; i++) { %>
 
             <dt>
-                <%= family_list[i].name %>
+                <a href="<%= family_list[i].url %>">
+                    <%= family_list[i].name %>
+                </a>
             </dt>
             <dd>
                 <%= family_list[i].description %>

@@ -16,12 +16,15 @@
     </h1>
 
     <ul>
-        <% for(let i=0;i < genesus_list.length; i++) { %>
+        <% for(let i=0;i < genus_list.length; i++) { %>
             <li>
-                <%= genesus_list[i].name %> of the
-                    <a href="">
-                        <%= genesus_list[i].family.name + " family" %>
-                    </a>
+                <a href="<%= genus_list[i].url %>">
+                    <%= genus_list[i].name %>
+                </a>
+                of the
+                <a href="<%= genus_list[i].family.url %>">
+                    <%= genus_list[i].family.name + " family" %>
+                </a>
             </li>
             <% } %>
     </ul>

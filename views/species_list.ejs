@@ -15,9 +15,11 @@
         <%= title %>
     </h1>
     <ul>
-        <% species_list.forEach(element=> { %>
+        <% species_list.forEach(species=> { %>
             <li>
-                <%= element.common_name %>
+                <a href="<%= species.url %>">
+                    <%= species.common_name %>
+                </a> (<%= species.scientific_name %>)
             </li>
             <% }); %>
     </ul>

@@ -19,7 +19,7 @@
         <% for (let i=0; i < speciesinstance_list.length; i++) { %>
             <li>
                 <%= speciesinstance_list[i].name %> the
-                    <a href="">
+                    <a href="<%= speciesinstance_list[i].url %>">
                         <%= speciesinstance_list[i].species.common_name %>
                     </a>
             </li>
