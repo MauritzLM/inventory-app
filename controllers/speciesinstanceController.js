@@ -1,4 +1,4 @@
-const SpeciesInstance = require("../models/speciesinstance");
+const SpeciesInstance = require("../models/speciesInstance");
 
 const async = require("async");
 
