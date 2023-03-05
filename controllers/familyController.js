@@ -1,4 +1,7 @@
 const Family = require("../models/family");
+const Genus = require("../models/genus");
+
+const async = require("async");
 
 // Display list of all Families.
 exports.families_list = (req, res, next) => {
@@ -11,9 +14,28 @@ exports.families_list = (req, res, next) => {
 };
 
 // Display detail page for a specific Family.
-exports.family_detail = (req, res) => {
-    res.send(`NOT IMPLEMENTED: Family detail: ${req.params.id}`);
+exports.family_detail = (req, res, next) => {
+    async.parallel({
+        family: function (callback) {
+            Family.findById(req.params.id).exec(callback)
+        },
+        genus_list: function (callback) {
+            Genus.find({ family: req.params.id }).exec(callback)
+        },
+    }, (err, results) => {
+        if (err) {
+            return next(err);
+        }
+        res.render("family_detail", {
+            title: `${results.family.name}`,
+            family: results.family,
+            genus_list: results.genus_list
+        });
+    }
+    )
 };
+
+
 
 // Display Family create form on GET.
 exports.family_create_get = (req, res) => {
