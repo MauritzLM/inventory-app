@@ -2,32 +2,33 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
 </head>
 
 <body>
-    <h1>
-        <%= title %>
-    </h1>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
 
-    <ul>
-        <% for(let i=0;i < genus_list.length; i++) { %>
-            <li>
-                <a href="<%= genus_list[i].url %>">
-                    <%= genus_list[i].name %>
-                </a>
-                of the
-                <a href="<%= genus_list[i].family.url %>">
-                    <%= genus_list[i].family.name + " family" %>
-                </a>
-            </li>
-            <% } %>
-    </ul>
+        <ul>
+            <% for(let i=0;i < genus_list.length; i++) { %>
+                <li>
+                    <a href="<%= genus_list[i].url %>">
+                        <%= genus_list[i].name %>
+                    </a>
+                    of the
+                    <a href="<%= genus_list[i].family.url %>">
+                        <%= genus_list[i].family.name + " family" %>
+                    </a>
+                </li>
+                <% } %>
+        </ul>
+    </main>
 </body>
 
 </html>

@@ -19,9 +19,7 @@ exports.genus_list = (req, res, next) => {
 exports.genus_detail = (req, res, next) => {
     async.parallel({
         genus: function (callback) {
-            Genus.findById(req.params.id)
-                .populate("family")
-                .exec(callback)
+            Genus.findById(req.params.id).exec(callback)
         },
         species_list: function (callback) {
             Species.find({ genus: req.params.id }).exec(callback)
@@ -30,13 +28,6 @@ exports.genus_detail = (req, res, next) => {
         if (err) {
             return next(err);
         }
-        if (results.genus == null) {
-            // No results.
-            const err = new Error("Genus not found");
-            err.status = 404;
-            return next(err);
-        }
-        // genus found
         res.render("genus_detail", {
             title: `${results.genus.name}`,
             genus: results.genus,

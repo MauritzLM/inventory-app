@@ -35,8 +35,6 @@ exports.family_detail = (req, res, next) => {
     )
 };
 
-
-
 // Display Family create form on GET.
 exports.family_create_get = (req, res) => {
     res.send("NOT IMPLEMENTED: Family create GET");

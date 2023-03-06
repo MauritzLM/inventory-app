@@ -2,29 +2,33 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
 </head>
 
 <body>
-    <h1>
-        <%= title %>
-    </h1>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
 
-    <ul>
-        <% for (let i=0; i < speciesinstance_list.length; i++) { %>
-            <li>
-                <%= speciesinstance_list[i].name %> the
-                    <a href="<%= speciesinstance_list[i].url %>">
-                        <%= speciesinstance_list[i].species.common_name %>
-                    </a>
-            </li>
-            <% } %>
-    </ul>
+        <ul>
+            <% for (let i=0; i < speciesinstance_list.length; i++) { %>
+                <li>
+                    <%= speciesinstance_list[i].name %> the
+                        <a href="<%= speciesinstance_list[i].url %>">
+                            <%= speciesinstance_list[i].species.common_name %>
+                        </a>
+                </li>
+                <% } %>
+        </ul>
+    </main>
+    <footer>
+
+    </footer>
 </body>
 
 </html>

@@ -2,32 +2,33 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
 </head>
 
 <body>
-    <h1>
-        <%= title %>
-    </h1>
-    <dl>
-        <% for (let i=0; i < family_list.length; i++) { %>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <dl>
+            <% for (let i=0; i < family_list.length; i++) { %>
 
-            <dt>
-                <a href="<%= family_list[i].url %>">
-                    <%= family_list[i].name %>
-                </a>
-            </dt>
-            <dd>
-                <%= family_list[i].description %>
-            </dd>
-            <br>
-            <% } %>
-    </dl>
+                <dt>
+                    <a href="<%= family_list[i].url %>">
+                        <%= family_list[i].name %>
+                    </a>
+                </dt>
+                <dd>
+                    <%= family_list[i].description %>
+                </dd>
+                <br>
+                <% } %>
+        </dl>
+    </main>
 </body>
 
 </html>
