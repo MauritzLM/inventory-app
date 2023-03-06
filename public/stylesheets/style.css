@@ -2,9 +2,22 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
+  font: 1.4rem "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+header ul {
+  list-style-type: none;
+  display: flex;
+  gap: 2em;
+}
+
+main {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
