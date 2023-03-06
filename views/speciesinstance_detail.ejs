@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
+</head>
+
+<body>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>The page of <%= title %> the <%= species_instance.species.common_name %>
+        </h1>
+        <p>
+            <%= title %> is <%= species_instance.age %> years old
+        </p>
+    </main>
+</body>
+
+</html>

@@ -1,4 +1,5 @@
 const SpeciesInstance = require("../models/speciesInstance");
+const Species = require("../models/species");
 
 const async = require("async");
 
@@ -16,9 +17,19 @@ exports.speciesinstance_list = (req, res, next) => {
 };
 
 // Display detail page for a specific SpeciesInstance.
-exports.speciesinstance_detail = (req, res) => {
-    res.send(`NOT IMPLEMENTED: SpeciesInstance detail: ${req.params.id}`);
-};
+exports.speciesinstance_detail = (req, res, next) => {
+    SpeciesInstance.findById(req.params.id)
+        .populate("species")
+        .exec(function (err, results) {
+            if (err) {
+                return next(err)
+            }
+            res.render("speciesinstance_detail", {
+                title: `${results.name}`,
+                species_instance: results
+            })
+        })
+}
 
 // Display SpeciesInstance create form on GET.
 exports.speciesinstance_create_get = (req, res) => {
