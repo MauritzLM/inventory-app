@@ -1,5 +1,8 @@
 const Genus = require("../models/genus");
 const Species = require("../models/species");
+const Family = require("../models/family");
+
+const { body, validationResult } = require("express-validator");
 
 const async = require("async");
 
@@ -38,14 +41,59 @@ exports.genus_detail = (req, res, next) => {
 };
 
 // Display Genus create form on GET.
-exports.genus_create_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Genus create GET");
+exports.genus_create_get = (req, res, next) => {
+    // get list of families
+    Family.find().exec(function (err, results) {
+        if (err) {
+            return next(err)
+        }
+        res.render("genus_form", { title: "Create new genus", family_list: results });
+    })
 };
 
 // Handle Genus create on POST.
-exports.genus_create_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Genus create POST");
-};
+exports.genus_create_post = [
+    body("genus_name")
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Genus name is required"),
+    body("genus_family")
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Please select a family"),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        const genus = new Genus({ name: req.body.genus_name, family: req.body.genus_family })
+
+        if (!errors.isEmpty()) {
+            // get families
+            Family.find().exec(function (err, results) {
+                if (err) {
+                    return next(err);
+                }
+                res.render("genus_form", {
+                    title: "Create new genus",
+                    genus,
+                    family_list: results,
+                    errors: errors.array()
+                });
+            });
+            return
+        }
+
+        genus.save((err) => {
+            if (err) {
+                return next(err)
+            }
+            res.redirect(genus.url);
+        })
+
+    }
+]
 
 // Display Genus delete form on GET.
 exports.genus_delete_get = (req, res) => {

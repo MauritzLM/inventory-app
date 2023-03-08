@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
+</head>
+
+<body>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <form action="" method="post" novalidate>
+            <!-- genus name -->
+            <label for="genus_name">Name of genus</label>
+            <input type="text" id="genus_name" name="genus_name"
+                value="<%= (typeof genus !== 'undefined' ? genus.name : '') %>" required>
+
+            <!-- genus family -->
+            <label for="genus_family"></label>
+            <select name="genus_family" id="genus_family" required>
+                <option value="">-- Select Family --</option>
+                <% family_list.forEach(family=> { %>
+                    <!-- value of option === _id of family -->
+                    <option value="<%= family._id %>">
+                        <%= family.name %>
+                    </option>
+                    <% }) %>
+            </select>
+            <button type="submit">Create genus</button>
+        </form>
+        <!-- List of errors -->
+        <% if(typeof errors !=='undefined' ) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
