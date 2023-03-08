@@ -45,12 +45,12 @@ exports.family_create_get = (req, res) => {
 // Handle Family create on POST.
 exports.family_create_post = [
     // validate and sanitize data
-    body("name")
+    body("family_name")
         .trim().
         isLength({ min: 1 })
         .escape()
         .withMessage("Family name is required"),
-    body("description")
+    body("family_description")
         .trim()
         .isLength({ min: 10 })
         .escape()
@@ -70,14 +70,14 @@ exports.family_create_post = [
         }
         // data is valid
         else {
-            Family.findOne({ name: req.body.name }).exec(function (err, found_family) {
+            Family.findOne({ name: req.body.family_name }).exec(function (err, found_family) {
                 if (err) {
                     return next(err);
                 }
                 if (found_family) {
                     res.redirect(found_family.url);
                 } else {
-                    const family = new Family({ name: req.body.name, description: req.body.description });
+                    const family = new Family({ name: req.body.family_name, description: req.body.family_description });
                     // save new family
                     family.save((err) => {
                         if (err) {
