@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
+
+</head>
+
+<body>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <form action="" method="post">
+            <label for="name">Family name</label>
+            <input type="text" id="name" name="name" value="<%= (typeof family !== 'undefined') ? family.name : '' %>"
+                required>
+
+            <label for="description">Description</label>
+            <textarea name="description" id="description" cols="30" rows="10"
+                required> <%= (typeof family !== 'undefined') ? family.description : '' %></textarea>
+            <button type="submit">Create Family</button>
+        </form>
+
+        <% if (typeof errors!=='undefined' ) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+
+                    <% }) %>
+            </ul>
+            <% } %>
+    </main>
+</body>
+
+</html>

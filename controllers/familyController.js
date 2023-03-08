@@ -1,6 +1,8 @@
 const Family = require("../models/family");
 const Genus = require("../models/genus");
 
+const { body, validationResult } = require("express-validator");
+
 const async = require("async");
 
 // Display list of all Families.
@@ -37,13 +39,57 @@ exports.family_detail = (req, res, next) => {
 
 // Display Family create form on GET.
 exports.family_create_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Family create GET");
+    res.render("family_form", { title: "Create Family" });
 };
 
 // Handle Family create on POST.
-exports.family_create_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Family create POST");
-};
+exports.family_create_post = [
+    // validate and sanitize data
+    body("name")
+        .trim().
+        isLength({ min: 1 })
+        .escape()
+        .withMessage("Family name is required"),
+    body("description")
+        .trim()
+        .isLength({ min: 10 })
+        .escape()
+        .withMessage("Family description must be more than 10 characters"),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        // if there are errors
+        if (!errors.isEmpty()) {
+            res.render("family_form", {
+                title: "Create Family",
+                family: req.body,
+                errors: errors.array()
+            })
+            return;
+        }
+        // data is valid
+        else {
+            Family.findOne({ name: req.body.name }).exec(function (err, found_family) {
+                if (err) {
+                    return next(err);
+                }
+                if (found_family) {
+                    res.redirect(found_family.url);
+                } else {
+                    const family = new Family({ name: req.body.name, description: req.body.description });
+                    // save new family
+                    family.save((err) => {
+                        if (err) {
+                            return next(err);
+                        }
+                        res.redirect(family.url);
+                    });
+                }
+            })
+        }
+    }
+];
 
 // Display Family delete form on GET.
 exports.family_delete_get = (req, res) => {
