@@ -91,11 +91,12 @@ exports.species_create_get = (req, res, next) => {
 
 // Handle species create on POST.
 exports.species_create_post = [
+    // validate & sanitize data
     body("species_name", "Please enter a name")
         .trim()
         .isLength({ min: 1 })
         .escape(),
-    body("scientific_name", "Please provide a scientific name")
+    body("scientific_name", "Please provide a valid scientific name")
         .trim()
         .isLength({ min: 5 })
         .escape(),
@@ -107,14 +108,59 @@ exports.species_create_post = [
         .trim()
         .isLength({ min: 1 })
         .escape(),
+    body("population")
+        .trim()
+        .escape(),
     body("species_genus", "Please select a genus")
         .trim()
         .isLength({ min: 1 })
         .escape(),
     (req, res, next) => {
-        res.send("Not implemented")
+
+        const errors = validationResult(req);
+
+        const species = new Species({
+            common_name: req.body.species_name,
+            scientific_name: req.body.scientific_name,
+            description: req.body.species_description,
+            family: req.body.species_family,
+            population_in_zoo: req.body.population,
+            genus: req.body.species_genus
+        });
+
+        if (!errors.isEmpty()) {
+            // found errors
+            async.parallel({
+                genesus: function (callback) {
+                    Genus.find().exec(callback);
+                },
+                families: function (callback) {
+                    Families.find().exec(callback);
+                }
+            }, (err, results) => {
+                if (err) {
+                    return next(err);
+                }
+                // re-render form 
+                res.render("species_form", {
+                    title: "Create new species",
+                    species,
+                    genus_list: results.genesus,
+                    family_list: results.families,
+                    errors: errors.array()
+                })
+            });
+            return;
+        }
+        // save new species
+        species.save((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect(species.url);
+        });
     }
-]
+];
 
 // Display species delete form on GET.
 exports.species_delete_get = (req, res) => {
