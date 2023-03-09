@@ -3,7 +3,9 @@
 
 <head>
   <%- include('./partials/head') %>
-    <title>title</title>
+    <title>
+      <%= title %>
+    </title>
 </head>
 
 <body>
@@ -23,6 +25,9 @@
       </li>
       <li>
         Number of species: <%= data.species_count %>
+      </li>
+      <li>
+        Zoo population: <%= data.population %>
       </li>
     </ul>
   </main>

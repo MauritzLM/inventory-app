@@ -18,7 +18,10 @@ exports.index = (req, res) => {
         },
         genus_count: function (callback) {
             Genus.countDocuments({}, callback);
-        }
+        },
+        population: function (callback) {
+            SpeciesInstances.countDocuments({}, callback);
+        },
     },
         function (err, results) {
             res.render("index", {
