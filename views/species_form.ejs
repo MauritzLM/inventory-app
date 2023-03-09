@@ -16,19 +16,21 @@
         </h1>
 
         <!-- Create Species form -->
-        <form action="" method="post">
+        <form action="" method="post" novalidate>
             <!-- Name -->
             <label for="species_name">Name</label>
-            <input type="text" name="species_name" id="species_name" value="" required>
+            <input type="text" name="species_name" id="species_name"
+                value="<%= (typeof species !== 'undefined') ? species.common_name : '' %>" required>
 
             <!-- Scientific Name -->
             <label for="scientific_name">Scientific name</label>
-            <input type="text" name="scientific_name" id="scientific_name" value="" required>
+            <input type="text" name="scientific_name" id="scientific_name"
+                value="<%= (typeof species !== 'undefined') ? species.scientific_name : '' %>" required>
 
             <!-- description -->
             <label for="species_description">Description</label>
-            <textarea name="species_description" id="species_description" cols="30" rows="10" value=""
-                required></textarea>
+            <textarea name="species_description" id="species_description" cols="30" rows="10"
+                required><%= (typeof species !== 'undefined') ? species.description : '' %></textarea>
 
             <!-- Family -->
             <select name="species_family" id="species_family" required>
@@ -40,6 +42,10 @@
                     <% }) %>
             </select>
 
+            <!-- population -->
+            <label for="population"></label>
+            <input type="number" id="population" name="population" value="0" min="0" max="0">
+
             <!-- Genus -->
             <select name="species_genus" id="species_genus" required>
                 <option value="">-- Select a Genus --</option>
@@ -50,8 +56,18 @@
                     <% }) %>
             </select>
 
-
+            <button type="submit">Create species</button>
         </form>
+        <!-- Errors -->
+        <% if(typeof errors !=='undefined' ) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
     </main>
 </body>
 
