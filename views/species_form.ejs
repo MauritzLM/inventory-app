@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
+</head>
+
+<body>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <!-- Create Species form -->
+        <form action="" method="post">
+            <!-- Name -->
+            <label for="species_name">Name</label>
+            <input type="text" name="species_name" id="species_name" value="" required>
+
+            <!-- Scientific Name -->
+            <label for="scientific_name">Scientific name</label>
+            <input type="text" name="scientific_name" id="scientific_name" value="" required>
+
+            <!-- description -->
+            <label for="species_description">Description</label>
+            <textarea name="species_description" id="species_description" cols="30" rows="10" value=""
+                required></textarea>
+
+            <!-- Family -->
+            <select name="species_family" id="species_family" required>
+                <option value="">-- Select a Family --</option>
+                <% family_list.forEach(family=> { %>
+                    <option value="<%= family._id %>">
+                        <%= family.name %>
+                    </option>
+                    <% }) %>
+            </select>
+
+            <!-- Genus -->
+            <select name="species_genus" id="species_genus" required>
+                <option value="">-- Select a Genus --</option>
+                <% genus_list.forEach(genus=> { %>
+                    <option value="<%= genus._id %>">
+                        <%= genus.name %>
+                    </option>
+                    <% }) %>
+            </select>
+
+
+        </form>
+    </main>
+</body>
+
+</html>
