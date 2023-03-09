@@ -12,7 +12,7 @@
     <header><%- include('./partials/header') %></header>
     <main>
         <h1>
-            <%= title %> page
+            <%= title %>
         </h1>
         <p>
             <%= species.description %>
@@ -28,6 +28,8 @@
 
                 <% }) %>
         </ul>
+
+        <a href="/catalog/speciesinstance/create">Add <%= species.common_name %> to zoo</a>
     </main>
 </body>
 
