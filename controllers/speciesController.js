@@ -1,6 +1,9 @@
 const Species = require("../models/species");
 const Families = require("../models/family");
+const Genus = require("../models/genus");
 const SpeciesInstances = require("../models/speciesInstance");
+
+const { body, validationResult } = require("express-validator");
 
 const async = require("async");
 
@@ -12,6 +15,9 @@ exports.index = (req, res) => {
         },
         species_count: function (callback) {
             Species.countDocuments({}, callback);
+        },
+        genus_count: function (callback) {
+            Genus.countDocuments({}, callback);
         }
     },
         function (err, results) {
@@ -61,14 +67,54 @@ exports.species_detail = (req, res, next) => {
 };
 
 // Display species create form on GET.
-exports.species_create_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species create GET");
+exports.species_create_get = (req, res, next) => {
+    async.parallel({
+        genesus: function (callback) {
+            Genus.find().exec(callback);
+        },
+        families: function (callback) {
+            Families.find().exec(callback);
+        }
+    },
+        (err, results) => {
+            if (err) {
+                return next(err)
+            }
+            res.render("species_form", {
+                title: "Create new species",
+                genus_list: results.genesus,
+                family_list: results.families
+            });
+        }
+    )
 };
 
 // Handle species create on POST.
-exports.species_create_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species create POST");
-};
+exports.species_create_post = [
+    body("species_name", "Please enter a name")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("scientific_name", "Please provide a scientific name")
+        .trim()
+        .isLength({ min: 5 })
+        .escape(),
+    body("species_description", "Please enter a description")
+        .trim()
+        .isLength({ min: 10 })
+        .escape(),
+    body("species_family", "Please select a family")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("species_genus", "Please select a genus")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    (req, res, next) => {
+        res.send("Not implemented")
+    }
+]
 
 // Display species delete form on GET.
 exports.species_delete_get = (req, res) => {
