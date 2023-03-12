@@ -4,6 +4,7 @@ const Genus = require("../models/genus");
 const { body, validationResult } = require("express-validator");
 
 const async = require("async");
+const { genus_list } = require("./genusController");
 
 // Display list of all Families.
 exports.families_list = (req, res, next) => {
@@ -92,21 +93,76 @@ exports.family_create_post = [
 ];
 
 // Display Family delete form on GET.
-exports.family_delete_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Family delete GET");
+exports.family_delete_get = (req, res, next) => {
+    async.parallel({
+        family: function (callback) {
+            Family.findById(req.params.id).exec(callback)
+        },
+        genus_list: function (callback) {
+            Genus.find({ family: req.params.id }).exec(callback)
+        }
+    }, (err, results) => {
+        if (err) {
+            return next(err);
+        }
+
+        res.render("family_delete", {
+            title: "Delete family",
+            family: results.family,
+            genus_list: results.genus_list
+        });
+    }
+    )
 };
 
 // Handle Family delete on POST.
-exports.family_delete_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Family delete POST");
+exports.family_delete_post = (req, res, next) => {
+    async.parallel({
+        family: function (callback) {
+            Family.findById(req.body.familyid).exec(callback);
+        },
+        genus_list: function (callback) {
+            Genus.find({ family: req.body.familyid }).exec(callback);
+        }
+    }, (err, results) => {
+        if (err) {
+            return next(err);
+        }
+        // Genesus left under family
+        if (genus_list.length > 0) {
+            res.render("family_Delete", {
+                title: "Delete family",
+                family: results.family,
+                genus_list: results.genus_list
+            });
+            return;
+        }
+        // Delete family
+        Family.findByIdAndRemove(req.body.familyid, (err) => {
+            if (err) {
+                return next(err);
+            }
+
+            res.redirect("/catalog/family/")
+        })
+    }
+    )
 };
 
 // DisplayFamily update form on GET.
-exports.family_update_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Family update GET");
+exports.family_update_get = (req, res, next) => {
+    Family.findById(req.params.id).exec(function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        res.render("family_form", { title: "Update family", family: results });
+    })
 };
 
 // Handle Family update on POST.
 exports.family_update_post = (req, res) => {
+    // validate sanitize
+
+    // find and update (!same id)*
     res.send("NOT IMPLEMENTED: Family update POST");
 };

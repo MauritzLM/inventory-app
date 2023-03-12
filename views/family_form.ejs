@@ -18,12 +18,12 @@
         <form action="" method="post">
             <label for="family_name">Family name</label>
             <input type="text" id="family_name" name="family_name"
-                value="<%= (typeof family !== 'undefined') ? family.family_name : '' %>" required>
+                value="<%= (typeof family !== 'undefined') ? family.name : '' %>" required>
 
             <label for="family_description">Description</label>
             <textarea name="family_description" id="family_description" cols="30" rows="10"
-                required> <%= (typeof family !== 'undefined') ? family.family_description : '' %></textarea>
-            <button type="submit">Create Family</button>
+                required> <%= (typeof family !== 'undefined') ? family.description : '' %></textarea>
+            <button type="submit">Submit</button>
         </form>
 
         <% if (typeof errors!=='undefined' ) { %>

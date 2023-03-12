@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/head") %>
+        <title>Document</title>
+</head>
+
+<body>
+    <header><%- include("./partials/header") %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <!-- If family contains genesus -->
+        <% if(genus_list.length> 0) { %>
+            <p>The <%= family.name %> family still has these genesus in it you need to remove them first to continue.
+            </p>
+            <% genus_list.forEach(genus=> { %>
+                <p>
+                    <a href="<%= genus.url %>">
+                        <%= genus.name %>
+                    </a>
+                </p>
+                <% }) %>
+
+                    <% } else { %>
+                        <p>Do you really want to delete the <%= family.name %> family</p>
+                        <!-- else create form -->
+                        <form action="" method="post">
+                            <input type="hidden" name="familyid" value="<%= family._id %>">
+                            <button type="submit">Delete family</button>
+                        </form>
+                        <% } %>
+    </main>
+</body>
+
+</html>
