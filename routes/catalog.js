@@ -59,7 +59,7 @@ router.post("/family/:id/update", family_controller.family_update_post);
 // GET request for oneFamily.
 router.get("/family/:id", family_controller.family_detail);
 
-// GET request for list of all Family.
+// GET request for list of all Families.
 router.get("/family", family_controller.families_list);
 
 /// GENUS ROUTES ///

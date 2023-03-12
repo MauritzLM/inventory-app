@@ -24,7 +24,7 @@ exports.genus_detail = (req, res, next) => {
         genus: function (callback) {
             Genus.findById(req.params.id).exec(callback)
         },
-        species_list: function (callback) {
+        genus_species: function (callback) {
             Species.find({ genus: req.params.id }).exec(callback)
         },
     }, (err, results) => {
@@ -34,7 +34,7 @@ exports.genus_detail = (req, res, next) => {
         res.render("genus_detail", {
             title: `${results.genus.name}`,
             genus: results.genus,
-            species_list: results.species_list
+            genus_species: results.genus_species,
         });
     }
     )
@@ -48,7 +48,7 @@ exports.genus_create_get = (req, res, next) => {
             return next(err)
         }
         res.render("genus_form", { title: "Create new genus", family_list: results });
-    })
+    });
 };
 
 // Handle Genus create on POST.
@@ -90,10 +90,10 @@ exports.genus_create_post = [
                 return next(err)
             }
             res.redirect(genus.url);
-        })
+        });
 
-    }
-]
+    },
+];
 
 // Display Genus delete form on GET.
 exports.genus_delete_get = (req, res) => {
