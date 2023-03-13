@@ -18,21 +18,22 @@
 
 
         <% if(genus_species) { %>
-            <% console.log(genus_species) %>
-                <p>list of species in genus</p>
-                <ul>
-                    <% genus_species.forEach(species=> { %>
-                        <li>
+            <p>list of species in genus</p>
+            <ul>
+                <% genus_species.forEach(species=> { %>
+                    <li>
+                        <a href="<%= species.url %>">
                             <%= species.common_name %>
-                        </li>
-                        <% }) %>
-                </ul>
-                <% } else { %>
-                    <p>There are no species in this Genus.</p>
-                    <% } %>
+                        </a>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } else { %>
+                <p>There are no species in this Genus.</p>
+                <% } %>
 
-                        <a href="<%= genus.url %>/update">Update genus</a>
-                        <a href="<%= genus.url %>/delete">Delete genus</a>
+                    <a href="<%= genus.url %>/update">Update genus</a>
+                    <a href="<%= genus.url %>/delete">Delete genus</a>
     </main>
 
 </body>
