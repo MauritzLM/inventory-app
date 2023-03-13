@@ -166,21 +166,156 @@ exports.species_create_post = [
 ];
 
 // Display species delete form on GET.
-exports.species_delete_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species delete GET");
+exports.species_delete_get = (req, res, next) => {
+    async.parallel({
+        species: function (callback) {
+            Species.findById(req.params.id).exec(callback)
+        },
+        species_instances: function (callback) {
+            SpeciesInstances.find({ species: req.params.id }).exec(callback)
+        }
+    }, (err, results) => {
+        if (err) {
+            return next(err)
+        }
+
+        res.render("species_delete", {
+            title: "Delete species",
+            species: results.species,
+            species_instances: results.species_instances
+        });
+    }
+    )
 };
 
 // Handle species delete on POST.
-exports.species_delete_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species delete POST");
+exports.species_delete_post = (req, res, next) => {
+    async.parallel({
+        species: function (callback) {
+            Species.findById(req.params.id).exec(callback)
+        },
+        species_instances: function (callback) {
+            SpeciesInstances.find({ species: req.params.id }).exec(callback)
+        }
+    }, (err, results) => {
+        if (err) {
+            return next(err)
+        }
+
+        if (results.species_instances.length > 0) {
+            res.render("species_delete", {
+                title: "Delete species",
+                species: results.species,
+                species_instances: results.species_instances
+            });
+            return;
+        }
+
+        Species.findByIdAndRemove(req.body.speciesid, (err) => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect("/catalog/species");
+        });
+    }
+    )
 };
 
 // Display species update form on GET.
-exports.species_update_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species update GET");
+exports.species_update_get = (req, res, next) => {
+    async.parallel({
+        species: function (callback) {
+            Species.findById(req.params.id).exec(callback)
+        },
+        genus_list: function (callback) {
+            Genus.find().exec(callback)
+        },
+        family_list: function (callback) {
+            Families.find().exec(callback)
+        }
+    }, (err, results) => {
+        if (err) {
+            return next(err);
+        }
+        res.render("species_form", {
+            title: "Update Species", species: results.species,
+            genus_list: results.genus_list,
+            family_list: results.family_list
+        });
+    }
+    )
 };
 
 // Handle species update on POST.
-exports.species_update_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: Species update POST");
-};
+exports.species_update_post = [
+    //validate and sanitize
+    body("species_name", "Please enter a name")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("scientific_name", "Please provide a valid scientific name")
+        .trim()
+        .isLength({ min: 5 })
+        .escape(),
+    body("species_description", "Please enter a description")
+        .trim()
+        .isLength({ min: 10 })
+        .escape(),
+    body("species_family", "Please select a family")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("population")
+        .trim()
+        .escape(),
+    body("species_genus", "Please select a genus")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        const species = new Species({
+            common_name: req.body.species_name,
+            scientific_name: req.body.scientific_name,
+            description: req.body.species_description,
+            family: req.body.species_family,
+            population_in_zoo: req.body.population,
+            genus: req.body.species_genus,
+            _id: req.params.id
+        });
+
+        if (!errors.isEmpty()) {
+            async.parallel({
+                family_list: function (callback) {
+                    Families.find().exec(callback)
+                },
+                genus_list: function (callback) {
+                    Genus.find().exec(callback)
+                }
+            }, (err, results) => {
+                if (err) {
+                    return next(err);
+                }
+                res.render("species_form", {
+                    title: "Update species",
+                    species,
+                    family_list: results.family_list,
+                    genus_list: results.genus_list,
+                    errors: errors.array()
+                });
+            }
+            )
+            return;
+        };
+
+        // Data is valid save
+        Species.findByIdAndUpdate(req.params.id, species, {}, (err, thespecies) => {
+            if (err) {
+                return next(err)
+            }
+            res.redirect(thespecies.url);
+        });
+    }
+];

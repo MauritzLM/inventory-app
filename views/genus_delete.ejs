@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= title %>
+        </title>
+</head>
+
+<body>
+    <header><%- include('./partials/header') %></header>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <% if(species_list.length>0) { %>
+            <p>Delete these species first before attempting to delete the <%= genus.name %> genus.</p>
+            <% species_list.forEach(animal=> { %>
+                <p><a href="<%= animal.url %>/delete">
+                        <%= animal.common_name %>
+                    </a></p>
+                <% }) %>
+                    <% } else { %>
+
+                        <form action="" method="post">
+                            <input type="hidden" name="genusid" value="<%= genus._id %>">
+                            <button>Delete</button>
+                        </form>
+                        <% } %>
+    </main>
+</body>
+
+</html>

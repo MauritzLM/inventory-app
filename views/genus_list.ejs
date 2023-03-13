@@ -16,17 +16,17 @@
         </h1>
 
         <ul>
-            <% for(let i=0;i < genus_list.length; i++) { %>
+            <% genus_list.forEach(genus=> { %>
                 <li>
-                    <a href="<%= genus_list[i].url %>">
-                        <%= genus_list[i].name %>
+                    <a href="<%= genus.url %>">
+                        <%= genus.name %>
                     </a>
                     of the
-                    <a href="<%= genus_list[i].family.url %>">
-                        <%= genus_list[i].family.name + " family" %>
+                    <a href="<%= genus.family.url %>">
+                        <%= genus.family.name + " family" %>
                     </a>
                 </li>
-                <% } %>
+                <% }) %>
         </ul>
 
         <a href="/catalog/genus/create">Create new genus</a>

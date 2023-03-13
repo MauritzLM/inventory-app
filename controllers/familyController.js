@@ -60,11 +60,13 @@ exports.family_create_post = [
     (req, res, next) => {
         const errors = validationResult(req);
 
+        const family = new Family({ name: req.body.family_name, description: req.body.family_description });
+
         // if there are errors
         if (!errors.isEmpty()) {
             res.render("family_form", {
                 title: "Create Family",
-                family: req.body,
+                family,
                 errors: errors.array()
             })
             return;
@@ -78,7 +80,6 @@ exports.family_create_post = [
                 if (found_family) {
                     res.redirect(found_family.url);
                 } else {
-                    const family = new Family({ name: req.body.family_name, description: req.body.family_description });
                     // save new family
                     family.save((err) => {
                         if (err) {
@@ -160,9 +161,41 @@ exports.family_update_get = (req, res, next) => {
 };
 
 // Handle Family update on POST.
-exports.family_update_post = (req, res) => {
+exports.family_update_post = [
     // validate sanitize
+    body("family_name")
+        .trim().
+        isLength({ min: 1 })
+        .escape()
+        .withMessage("Family name is required"),
+    body("family_description")
+        .trim()
+        .isLength({ min: 10 })
+        .escape()
+        .withMessage("Family description must be more than 10 characters"),
 
-    // find and update (!same id)*
-    res.send("NOT IMPLEMENTED: Family update POST");
-};
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        // create object with same id
+        const family = new Family({ name: req.body.family_name, description: req.body.family_description, _id: req.params.id });
+
+        if (!errors.isEmpty()) {
+            res.render("family_form", {
+                title: "Update family",
+                family,
+                errors: errors.array()
+            });
+            return;
+        }
+
+        // data is valid
+        Family.findByIdAndUpdate(req.params.id, family, {}, (err, thefamily) => {
+            if (err) {
+                return next(err);
+            }
+
+            res.redirect(thefamily.url);
+        });
+    }
+];
