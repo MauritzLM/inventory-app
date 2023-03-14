@@ -10,46 +10,55 @@
 
 <body>
     <header><%- include('./partials/header') %></header>
-    <h1>
-        <%= title %>
-    </h1>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
 
-    <form action="" method="post" novalidate>
-        <!-- Animal name -->
-        <label for="animal_name">Name:</label>
-        <input type="text" name="animal_name" id="animal_name"
-            value="<%= (typeof species_instance !== 'undefined') ? species_instance.name : '' %>" required>
+        <form action="" method="post" novalidate>
+            <!-- Animal name -->
+            <div>
+                <label for="animal_name">Name:</label>
+                <input type="text" name="animal_name" id="animal_name"
+                    value="<%= (typeof species_instance !== 'undefined') ? species_instance.name : '' %>" required>
+            </div>
 
-        <!-- Animal age -->
-        <label for="animal_age">Age:</label>
-        <input type="number" name="animal_age" id="animal_age"
-            value="<%= (typeof species_instance !== 'undefined') ? species_instance.age : 0 %>" min="0">
+            <!-- Animal age -->
+            <div>
+                <label for="animal_age">Age:</label>
+                <input type="number" name="animal_age" id="animal_age"
+                    value="<%= (typeof species_instance !== 'undefined') ? species_instance.age : 0 %>" min="0">
+            </div>
 
-        <!-- Select species -->
-        <select name="animal_species" id="animal_species" required>
-            <option value="">-- Select species --</option>
-            <% species_list.forEach(species=> { %>
-                <option value="<%= species._id %>">
-                    <%= species.common_name %>
-                </option>
+            <!-- Select species -->
+            <div>
+                <select name="animal_species" id="animal_species" required>
+                    <option value="">-- Select species --</option>
+                    <% species_list.forEach(species=> { %>
+                        <option value="<%= species._id %>">
+                            <%= species.common_name %>
+                        </option>
 
-                <% }) %>
-        </select>
+                        <% }) %>
+                </select>
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
+            <button type="submit">Submit</button>
+        </form>
 
-    <!-- Display errors -->
-    <% if (typeof errors !=='undefined' ) { %>
-        <ul>
-            <% errors.forEach(error=> { %>
-                <li>
-                    <%= error.msg %>
-                </li>
-                <% }) %>
+        <!-- Display errors -->
+        <% if (typeof errors !=='undefined' ) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
 
-        </ul>
-        <% } %>
+            </ul>
+            <% } %>
+    </main>
+    <footer></footer>
 </body>
 
 </html>

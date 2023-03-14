@@ -18,43 +18,55 @@
         <!-- Create Species form -->
         <form action="" method="post" novalidate>
             <!-- Name -->
-            <label for="species_name">Name</label>
-            <input type="text" name="species_name" id="species_name"
-                value="<%= (typeof species !== 'undefined') ? species.common_name : '' %>" required>
+            <div>
+                <label for="species_name">Name</label>
+                <input type="text" name="species_name" id="species_name"
+                    value="<%= (typeof species !== 'undefined') ? species.common_name : '' %>" required>
+            </div>
 
             <!-- Scientific Name -->
-            <label for="scientific_name">Scientific name</label>
-            <input type="text" name="scientific_name" id="scientific_name"
-                value="<%= (typeof species !== 'undefined') ? species.scientific_name : '' %>" required>
+            <div>
+                <label for="scientific_name">Scientific name</label>
+                <input type="text" name="scientific_name" id="scientific_name"
+                    value="<%= (typeof species !== 'undefined') ? species.scientific_name : '' %>" required>
+            </div>
 
             <!-- description -->
-            <label for="species_description">Description</label>
-            <textarea name="species_description" id="species_description" cols="30" rows="10"
-                required><%= (typeof species !== 'undefined') ? species.description : '' %></textarea>
+            <div>
+                <label for="species_description">Description</label>
+                <textarea name="species_description" id="species_description" cols="30" rows="10"
+                    required><%= (typeof species !== 'undefined') ? species.description : '' %></textarea>
+            </div>
 
             <!-- Family -->
-            <select name="species_family" id="species_family" required>
-                <option value="">-- Select a Family --</option>
-                <% family_list.forEach(family=> { %>
-                    <option value="<%= family._id %>">
-                        <%= family.name %>
-                    </option>
-                    <% }) %>
-            </select>
+            <div>
+                <select name="species_family" id="species_family" required>
+                    <option value="">-- Select a Family --</option>
+                    <% family_list.forEach(family=> { %>
+                        <option value="<%= family._id %>">
+                            <%= family.name %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
 
             <!-- population -->
-            <label for="population"></label>
-            <input type="number" id="population" name="population" value="0" min="0" max="0">
+            <div>
+                <label for="population"></label>
+                <input type="hidden" id="population" name="population" value="0" min="0" max="0">
+            </div>
 
             <!-- Genus -->
-            <select name="species_genus" id="species_genus" required>
-                <option value="">-- Select a Genus --</option>
-                <% genus_list.forEach(genus=> { %>
-                    <option value="<%= genus._id %>">
-                        <%= genus.name %>
-                    </option>
-                    <% }) %>
-            </select>
+            <div>
+                <select name="species_genus" id="species_genus" required>
+                    <option value="">-- Select a Genus --</option>
+                    <% genus_list.forEach(genus=> { %>
+                        <option value="<%= genus._id %>">
+                            <%= genus.name %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
 
             <button type="submit">Submit</button>
         </form>

@@ -16,21 +16,25 @@
         </h1>
         <form action="" method="post" novalidate>
             <!-- genus name -->
-            <label for="genus_name">Name of genus</label>
-            <input type="text" id="genus_name" name="genus_name"
-                value="<%= (typeof genus !== 'undefined' ? genus.name : '') %>" required>
-
+            <div>
+                <label for="genus_name">Name of genus</label>
+                <input type="text" id="genus_name" name="genus_name"
+                    value="<%= (typeof genus !== 'undefined' ? genus.name : '') %>" required>
+            </div>
             <!-- genus family -->
-            <label for="genus_family"></label>
-            <select name="genus_family" id="genus_family" required>
-                <option value="">-- Select Family --</option>
-                <% family_list.forEach(family=> { %>
-                    <!-- value of option === _id of family -->
-                    <option value="<%= family._id %>">
-                        <%= family.name %>
-                    </option>
-                    <% }) %>
-            </select>
+            <div>
+                <label for="genus_family"></label>
+                <select name="genus_family" id="genus_family" required>
+                    <option value="">-- Select Family --</option>
+                    <% family_list.forEach(family=> { %>
+                        <!-- value of option === _id of family -->
+                        <option value="<%= family._id %>">
+                            <%= family.name %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
             <button type="submit">Submit</button>
         </form>
         <!-- List of errors -->
