@@ -3,23 +3,58 @@
 }
 
 html {
+  font-family: 'Poppins', sans-serif;
   font-size: 10px;
 }
 
 body {
-  font: 1.4rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 1.6rem;
+  background-color: #e7e8d1;
+  margin: 0;
+  color: #333835;
 }
 
 header ul {
   list-style-type: none;
   display: flex;
   gap: 2em;
+  margin: 0;
+  padding-left: 0;
+}
+
+header li a {
+  color: #333835;
+}
+
+nav {
+  background-color: #a7beae;
+}
+
+nav li {
+  padding: 1em;
 }
 
 main {
-  padding: 50px;
+  padding: 2em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 50%;
+}
+
+form input,
+textarea {
+  display: block;
+}
+
+form button {
+  width: 200px;
 }
 
 a {
-  color: #00B7FF;
+  color: rgb(107, 180, 248);
+  text-decoration: none;
 }
